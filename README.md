@@ -12,6 +12,7 @@ This repository contains an Ansible playbook designed to install and configure a
 
 ## Usage
 
+0. Add shared folder to the VM and enable retina resolution in display settings.
 1. Install debian latest release from [here](https://cdimage.debian.org/debian-cd/current/arm64/iso-cd/) (enable ssh server)
 2. Edit `/etc/apt/sources.list` and comment out `update` sources (only `testing` and `testing-security` sources should be uncommented):
 
