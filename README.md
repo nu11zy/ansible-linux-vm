@@ -1,6 +1,6 @@
 # Linux VM for MacOS (Debian Testing)
 
-![xfce](.github/assets/xfce.png)
+![xfce](/.github/assets/xfce.png)
 
 This repository contains an Ansible playbook designed to install and configure a minimal XFCE4 environment on a macOS virtual machine. I use this playbook to create a golden image, which serves as a base for installing pentesting tools.
 
