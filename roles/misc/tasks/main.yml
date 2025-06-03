@@ -1,0 +1,29 @@
+- name: Disable screen lock
+  become: true
+  file:
+    path: /etc/xdg/autostart/light-locker.desktop
+    state: absent
+
+- name: Copy /etc/xdg/user-dirs.defaults
+  become: true
+  copy:
+    src: user-dirs.defaults
+    dest: /etc/xdg/user-dirs.defaults
+
+- name: update /etc/fstab
+  become: true
+  lineinfile:
+    path: /etc/fstab
+    line: .host:/    /mnt/hgfs    fuse.vmhgfs-fuse    defaults,allow_other,nofail    0    0
+
+- name: create directory for shares
+  file:
+    src: /mnt/hgfs
+    path: ~/share
+    state: link
+    force: true
+
+- name: create directory for tools
+  file:
+    path: ~/tools
+    state: directory

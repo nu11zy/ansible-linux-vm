@@ -1,0 +1,68 @@
+- name: install packages
+  become: true
+  apt:
+    state: latest
+    name:
+      - tilix
+      - dconf-cli
+      - tree
+      - bat
+
+# Terminal
+- name: Set default terminal
+  become: true
+  alternatives:
+    name: x-terminal-emulator
+    link: /usr/bin/x-terminal-emulator
+    path: /usr/bin/tilix
+
+- name: Create tilix config directory
+  file:
+    path: ~/.config/tilix/schemes
+    state: directory
+    recurse: true
+
+- name: Copy Kali.json
+  copy:
+    src: Kali.json
+    dest: ~/.config/tilix/schemes/Kali.json
+
+- name: Copy tilix.dconf
+  copy:
+    src: tilix.dconf
+    dest: ~/.config/tilix/tilix.dconf
+
+- name: Set tilix theme
+  shell: |
+    dconf load /com/gexperts/Tilix/ < ~/.config/tilix/tilix.dconf
+
+# Shell
+- name: Install packages
+  become: true
+  apt:
+    state: latest
+    name:
+      - zsh
+
+- name: Copy .zshrc
+  copy:
+    src: .zshrc
+    dest: ~/.zshrc
+
+- name: Copy zsh-autosuggestions
+  become: true
+  unarchive:
+    src: zsh-autosuggestions.zip
+    dest: /usr/local/share/
+
+- name: Copy zsh-syntax-highlighting
+  become: true
+  unarchive:
+    src: zsh-syntax-highlighting.zip
+    dest: /usr/local/share/
+
+- name: Make zsh the default shell
+  become: true
+  user:
+    name: "{{ ansible_env.USER }}"
+    shell: /bin/zsh

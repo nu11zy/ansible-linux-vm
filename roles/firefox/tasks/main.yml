@@ -1,0 +1,51 @@
+- name: Install firefox-esr
+  become: true
+  apt:
+    state: latest
+    name:
+      - firefox-esr
+
+- name: Start firefox
+  shell: timeout 10 firefox-esr --headless
+  ignore_errors: true
+
+- name: Check firefox config folder
+  find:
+    paths: ~/.mozilla/firefox
+    patterns: '^.*\.default-esr'
+    use_regex: true
+    file_type: directory
+  register: firefox_config_folder_search
+
+- name: Set firefox folder name as fact
+  set_fact:
+    firefox_config_folder_path: "{{ firefox_config_folder_search.files[0].path }}"
+
+- name: Delete default profile
+  file:
+    path: "{{ firefox_config_folder_path }}"
+    state: absent
+
+- name: Create new profile folder
+  file:
+    path: "{{ firefox_config_folder_path }}"
+    state: directory
+    recurse: true
+
+- name: Copy user profile
+  unarchive:
+    src: profile.zip
+    dest: "{{ firefox_config_folder_path }}"
+
+- name: Create /usr/share/firefox-esr directory
+  become: true
+  file:
+    path: /usr/share/firefox-esr
+    state: directory
+    recurse: true
+
+- name: Copy firefox enterprise policy
+  become: true
+  unarchive:
+    src: enterprise_policy.zip
+    dest: /usr/share/firefox-esr

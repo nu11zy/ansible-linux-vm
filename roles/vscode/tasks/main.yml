@@ -1,0 +1,12 @@
+- name: Copy code.desktop
+  become: true
+  copy:
+    src: code.desktop
+    dest: /usr/share/applications/code.desktop
+
+- name: Create wrapper script for vscode
+  become: true
+  copy:
+    src: code
+    dest: /usr/bin/code
+    mode: '0755'

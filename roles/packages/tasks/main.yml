@@ -1,0 +1,21 @@
+- name: update apt cache
+  become: true
+  apt:
+    update_cache: yes
+
+- name: install packages
+  become: true
+  apt:
+    state: latest
+    name:
+      - curl
+      - wget
+      - zip
+      - unzip
+      - p7zip-full
+      - git
+      - vim
+      - nano
+      - xorg
+      - xsel
+      - open-vm-tools-desktop

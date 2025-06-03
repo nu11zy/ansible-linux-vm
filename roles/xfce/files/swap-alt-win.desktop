@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=setxkbmap -option altwin:swap_alt_win
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Swap Alt and Win
+Comment=Swap Alt and Win keys on keyboard

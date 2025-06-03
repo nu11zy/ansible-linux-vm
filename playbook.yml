@@ -1,0 +1,33 @@
+- name: Linux VM for MacOS (Debian Testing)
+  hosts: all
+  gather_facts: true
+
+  roles:
+    - role: packages
+      tags: packages
+
+    - role: xfce
+      tags: xfce
+
+    - role: terminal
+      tags: terminal
+
+    - role: firefox
+      tags: firefox
+
+    - role: misc
+      tags: misc
+
+    - role: gantsign.visual-studio-code
+      tags: vscode
+      users:
+        - username: "{{ ansible_env.USER }}"
+          visual_studio_code_extensions:
+            - mads-hartmann.bash-ide-vscode
+            - mhutchie.git-graph
+    - role: vscode
+      tags: vscode
+
+    - role: network
+      tags: network
+  

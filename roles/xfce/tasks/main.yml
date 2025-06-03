@@ -1,0 +1,156 @@
+- name: Install xfce4 packages
+  become: true
+  apt:
+    state: latest
+    name:
+      - xfce4
+      - xfce4-whiskermenu-plugin
+      - xfce4-systemload-plugin
+      - xfce4-netload-plugin
+      - xfce4-taskmanager
+      - xfce4-xkb-plugin
+      - thunar
+      - thunar-archive-plugin
+      - ristretto
+      - papirus-icon-theme
+
+# HiDPI settings
+- name: Set xfce4 DPI
+  shell: xfconf-query -c xsettings -p /Xft/DPI -s 192
+
+- name: Set DPI in ~/.Xresources
+  shell: 'echo "Xft.dpi: 192" > ~/.Xresources'
+
+- name: Set HiDPI scaling variables for GTK and JAVA
+  become: true
+  copy:
+    content: |
+      JAVA_TOOL_OPTIONS=-Dsun.java2d.uiScale=2
+      GDK_SCALE=2
+      GDK_DPI_SCALE=0.5
+      QT_AUTO_SCREEN_SCALE_FACTOR=1
+    dest: "/etc/environment"
+
+- name: Add scale command
+  become: true
+  copy:
+    dest: /usr/local/bin/xscale
+    content: |
+      #!/bin/sh
+      xrandr --output Virtual-1 --auto
+    mode: '0755'
+
+# Theme settings
+- name: Install nordic theme
+  become: true
+  unarchive:
+    src: Nordic.zip
+    dest: /usr/share/themes/
+
+- name: Set theme settings
+  shell: |
+    xfconf-query --create -c 'xsettings' -p '/Net/ThemeName' --type 'string' --set 'Nordic'
+    xfconf-query --create -c 'xfwm4' -p '/general/theme' --type 'string' --set 'Nordic'
+    xfconf-query --create -c 'xsettings' -p '/Xfce/SyncThemes' --type 'bool' --set 'true'
+    xfconf-query --create -c 'xsettings' -p '/Net/IconThemeName' --type 'string' --set 'Papirus-Dark'
+    xfconf-query --create -c 'xsettings' -p '/Gtk/CursorThemeName' --type 'string' --set 'Adwaita'
+
+- name: Set desktop settings
+  shell: |
+    xfconf-query --create -c 'xfce4-desktop' -p '/desktop-icons/style' --type 'int' --set '0'
+    xfconf-query --create -c 'xfce4-desktop' -p '/desktop-menu/show' --type 'bool' --set 'false'
+    xfconf-query --create -c 'xfce4-desktop' -p '/windowlist-menu/show' --type 'bool' --set 'false'
+    xfconf-query --create -c 'xfce4-desktop' -p '/backdrop/screen0/monitorVirtual-1/workspace0/color-style' --type 'int' --set '0'
+    xfconf-query --create -c 'xfce4-desktop' -p '/backdrop/screen0/monitorVirtual-1/workspace0/image-style' --type 'int' --set '0'
+    xfconf-query --create -c 'xfce4-desktop' -p '/backdrop/screen0/monitorVirtual-1/workspace0/rgba1' --type 'double' --set '0.10196078431372549' --type 'double' --set '0.10196078431372549' --type 'double' --set '0.11372549019607843' --type 'double' --set '1'
+    xfconf-query --create -c 'keyboard-layout' -p '/Default/XkbDisable' --type 'bool' --set 'false'
+    xfconf-query --create -c 'keyboard-layout' -p '/Default/XkbOptions/Group' --type 'string' --set 'grp:ralt_rshift_toggle'
+  
+- name: Set window manager settings
+  shell: |
+    xfconf-query --create -c 'xfwm4' -p '/general/button_layout' --type 'string' --set 'CHM|'
+    xfconf-query --create -c 'xfwm4' -p '/general/title_alignment' --type 'string' --set 'center'
+    xfconf-query --create -c 'xfwm4' -p '/general/cycle_workspaces' --type 'bool' --set 'true'
+    xfconf-query --create -c 'xfwm4' -p '/general/activate_action' --type 'string' --set 'switch'
+    xfconf-query --create -c 'xfwm4' -p '/general/mousewheel_rollup' --type 'bool' --set 'false'
+    xfconf-query --create -c 'xfwm4' -p '/general/scroll_workspaces' --type 'bool' --set 'false'
+    xfconf-query --create -c 'xfce4-appfinder' -p '/hide-window-decorations' --type 'bool' --set 'false'
+    xfconf-query --create -c 'xfce4-appfinder' -p '/hide-window-decorations' --type 'bool' --set 'true'
+    xfconf-query --create -c 'xfce4-appfinder' -p '/close-on-focus-lost' --type 'bool' --set 'true'
+    xfconf-query --create -c 'xfce4-appfinder' -p '/sort-by-frecency' --type 'bool' --set 'true'
+
+- name: Ensure xfce-perchannel-xml directory exists
+  file:
+    path: ~/.config/xfce4/xfconf/xfce-perchannel-xml
+    state: directory
+    recurse: true
+
+- name: Copy xfce4-keyboard-shortcuts.xml
+  copy:
+    src: xfce4-keyboard-shortcuts.xml
+    dest: ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+
+- name: Copy swap-alt-win.desktop
+  become: true
+  copy:
+    src: swap-alt-win.desktop
+    dest: /etc/xdg/autostart/swap-alt-win.desktop
+
+- name: Install panel plugins
+  become: true
+  apt:
+    state: latest
+    name:
+      - xfce4-whiskermenu-plugin
+      - xfce4-systemload-plugin
+      - xfce4-netload-plugin
+      - xfce4-taskmanager
+      - xfce4-xkb-plugin
+
+- name: Remove default panel directory
+  file:
+    path: ~/.config/xfce4/panel
+    state: absent
+
+- name: Ensure xfce4 directory exists
+  file:
+    path: ~/.config/xfce4
+    state: directory
+    recurse: true
+
+- name: Ensure xfce-perchannel-xml directory exists
+  file:
+    path: ~/.config/xfce4/xfconf/xfce-perchannel-xml
+    state: directory
+    recurse: true
+
+- name: Copy panel plugins
+  unarchive:
+    src: panel.zip
+    dest: ~/.config/xfce4/
+
+- name: Copy panel configuration
+  copy:
+    src: xfce4-panel.xml
+    dest: ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
+
+- name: Copy lightdm-gtk-greeter.conf
+  become: true
+  copy:
+    src: lightdm-gtk-greeter.conf
+    dest: /etc/lightdm/lightdm-gtk-greeter.conf
+
+# Fonts
+- name: Install fonts
+  become: true
+  apt:
+    state: latest
+    name:
+      - fonts-jetbrains-mono 
+      - fonts-noto 
+      - fonts-recommended
+
+- name: Set font settings
+  shell: |
+    xfconf-query --create -c 'xsettings' -p '/Gtk/FontName' --type 'string' --set 'Noto Sans 10'
+    xfconf-query --create -c 'xsettings' -p '/Gtk/MonospaceFontName' --type 'string' --set 'JetBrains Mono NL 12'
