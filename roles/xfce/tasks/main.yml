@@ -16,29 +16,40 @@
 
 # HiDPI settings
 - name: Set xfce4 DPI
-  shell: xfconf-query -c xsettings -p /Xft/DPI -s 192
+  xfconf:
+    channel: xsettings
+    property: /Xft/DPI
+    value_type: int
+    value: 192
 
-- name: Set DPI in ~/.Xresources
-  shell: 'echo "Xft.dpi: 192" > ~/.Xresources'
+- name: Set xresources DPI
+  blockinfile:
+    path: ~/.Xresources
+    create: true
+    block: |
+      Xft.dpi: 192
+    marker: '!! {mark} ANSIBLE MANAGED BLOCK'
 
-- name: Set HiDPI scaling variables for GTK and JAVA
+- name: Set HiDPI scaling variables for GTK, QT and JAVA
   become: true
-  copy:
-    content: |
+  blockinfile:
+    path: /etc/environment
+    create: true
+    block: |
       JAVA_TOOL_OPTIONS=-Dsun.java2d.uiScale=2
       GDK_SCALE=2
       GDK_DPI_SCALE=0.5
       QT_AUTO_SCREEN_SCALE_FACTOR=1
-    dest: "/etc/environment"
+    marker: '## {mark} ANSIBLE MANAGED BLOCK'
 
-- name: Add scale command
+- name: Add autoscale command (xscale)
   become: true
   copy:
     dest: /usr/local/bin/xscale
     content: |
       #!/bin/sh
-      xrandr --output Virtual-1 --auto
-    mode: '0755'
+      xrandr --output "$(xrandr --query | awk '/ connected/{print $1; exit}')" --auto
+    mode: 0755
 
 # Theme settings
 - name: Install nordic theme
@@ -47,54 +58,38 @@
     src: Nordic.zip
     dest: /usr/share/themes/
 
-- name: Set theme settings
-  shell: |
-    xfconf-query --create -c 'xsettings' -p '/Net/ThemeName' --type 'string' --set 'Nordic'
-    xfconf-query --create -c 'xfwm4' -p '/general/theme' --type 'string' --set 'Nordic'
-    xfconf-query --create -c 'xsettings' -p '/Xfce/SyncThemes' --type 'bool' --set 'true'
-    xfconf-query --create -c 'xsettings' -p '/Net/IconThemeName' --type 'string' --set 'Papirus-Dark'
-    xfconf-query --create -c 'xsettings' -p '/Gtk/CursorThemeName' --type 'string' --set 'Adwaita'
-
-- name: Set desktop settings
-  shell: |
-    xfconf-query --create -c 'xfce4-desktop' -p '/desktop-icons/style' --type 'int' --set '0'
-    xfconf-query --create -c 'xfce4-desktop' -p '/desktop-menu/show' --type 'bool' --set 'false'
-    xfconf-query --create -c 'xfce4-desktop' -p '/windowlist-menu/show' --type 'bool' --set 'false'
-    xfconf-query --create -c 'xfce4-desktop' -p '/backdrop/screen0/monitorVirtual-1/workspace0/color-style' --type 'int' --set '0'
-    xfconf-query --create -c 'xfce4-desktop' -p '/backdrop/screen0/monitorVirtual-1/workspace0/image-style' --type 'int' --set '0'
-    xfconf-query --create -c 'xfce4-desktop' -p '/backdrop/screen0/monitorVirtual-1/workspace0/rgba1' --type 'double' --set '0.10196078431372549' --type 'double' --set '0.10196078431372549' --type 'double' --set '0.11372549019607843' --type 'double' --set '1'
-    xfconf-query --create -c 'keyboard-layout' -p '/Default/XkbDisable' --type 'bool' --set 'false'
-    xfconf-query --create -c 'keyboard-layout' -p '/Default/XkbOptions/Group' --type 'string' --set 'grp:ralt_rshift_toggle'
-  
-- name: Set window manager settings
-  shell: |
-    xfconf-query --create -c 'xfwm4' -p '/general/button_layout' --type 'string' --set 'CHM|'
-    xfconf-query --create -c 'xfwm4' -p '/general/title_alignment' --type 'string' --set 'center'
-    xfconf-query --create -c 'xfwm4' -p '/general/cycle_workspaces' --type 'bool' --set 'true'
-    xfconf-query --create -c 'xfwm4' -p '/general/activate_action' --type 'string' --set 'switch'
-    xfconf-query --create -c 'xfwm4' -p '/general/mousewheel_rollup' --type 'bool' --set 'false'
-    xfconf-query --create -c 'xfwm4' -p '/general/scroll_workspaces' --type 'bool' --set 'false'
-    xfconf-query --create -c 'xfce4-appfinder' -p '/hide-window-decorations' --type 'bool' --set 'false'
-    xfconf-query --create -c 'xfce4-appfinder' -p '/hide-window-decorations' --type 'bool' --set 'true'
-    xfconf-query --create -c 'xfce4-appfinder' -p '/close-on-focus-lost' --type 'bool' --set 'true'
-    xfconf-query --create -c 'xfce4-appfinder' -p '/sort-by-frecency' --type 'bool' --set 'true'
-
-- name: Ensure xfce-perchannel-xml directory exists
-  file:
-    path: ~/.config/xfce4/xfconf/xfce-perchannel-xml
-    state: directory
-    recurse: true
-
-- name: Copy xfce4-keyboard-shortcuts.xml
-  copy:
-    src: xfce4-keyboard-shortcuts.xml
-    dest: ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
-
-- name: Copy swap-alt-win.desktop
-  become: true
-  copy:
-    src: swap-alt-win.desktop
-    dest: /etc/xdg/autostart/swap-alt-win.desktop
+- name: Configure XFCE theme, desktop and window manager settings
+  xfconf:
+    channel: "{{ item.channel }}"
+    property: "{{ item.property }}"
+    value: "{{ item.value }}"
+    value_type: "{{ item.type }}"
+  loop:
+    # Theme settings
+    - { channel: xsettings, property: /Net/ThemeName, value: Nordic, type: string }
+    - { channel: xfwm4, property: /general/theme, value: Nordic, type: string }
+    - { channel: xsettings, property: /Xfce/SyncThemes, value: true, type: bool }
+    - { channel: xsettings, property: /Net/IconThemeName, value: Papirus-Dark, type: string }
+    - { channel: xsettings, property: /Gtk/CursorThemeName, value: Adwaita, type: string }
+    # Desktop settings
+    - { channel: xfce4-desktop, property: /desktop-icons/style, value: 0, type: int }
+    - { channel: xfce4-desktop, property: /desktop-menu/show, value: false, type: bool }
+    - { channel: xfce4-desktop, property: /windowlist-menu/show, value: false, type: bool }
+    - { channel: xfce4-desktop, property: /backdrop/screen0/monitorVirtual-1/workspace0/color-style, value: 0, type: int }
+    - { channel: xfce4-desktop, property: /backdrop/screen0/monitorVirtual-1/workspace0/image-style, value: 0, type: int }
+    - { channel: xfce4-desktop, property: /backdrop/screen0/monitorVirtual-1/workspace0/rgba1, value: [0.10196078431372549, 0.10196078431372549, 0.11372549019607843, 1], type: double, force_array: true }
+    - { channel: keyboard-layout, property: /Default/XkbDisable, value: false, type: bool }
+    - { channel: keybo ard-layout, property: /Default/XkbOptions/Group, value: grp:alt_shift_toggle, type: string }
+    # Window manager settings
+    - { channel: xfwm4, property: /general/button_layout, value: CHM|, type: string }
+    - { channel: xfwm4, property: /general/title_alignment, value: center, type: string }
+    - { channel: xfwm4, property: /general/cycle_workspaces, value: true, type: bool }
+    - { channel: xfwm4, property: /general/activate_action, value: switch, type: string }
+    - { channel: xfwm4, property: /general/mousewheel_rollup, value: false, type: bool }
+    - { channel: xfwm4, property: /general/scroll_workspaces, value: false, type: bool }
+    - { channel: xfce4-appfinder, property: /hide-window-decorations, value: true, type: bool }
+    - { channel: xfce4-appfinder, property: /close-on-focus-lost, value: true, type: bool }
+    - { channel: xfce4-appfinder, property: /sort-by-frecency, value: true, type: bool }
 
 - name: Install panel plugins
   become: true
@@ -112,22 +107,20 @@
     path: ~/.config/xfce4/panel
     state: absent
 
-- name: Ensure xfce4 directory exists
+- name: Ensure panel directory exists
   file:
-    path: ~/.config/xfce4
-    state: directory
-    recurse: true
-
-- name: Ensure xfce-perchannel-xml directory exists
-  file:
-    path: ~/.config/xfce4/xfconf/xfce-perchannel-xml
+    path: ~/.config/xfce4/panel
     state: directory
     recurse: true
 
 - name: Copy panel plugins
-  unarchive:
-    src: panel.zip
-    dest: ~/.config/xfce4/
+  copy:
+    src: panel/
+    dest: ~/.config/xfce4/panel/
+    mode: '0644'
+    directory_mode: '0755'
+  tags:
+    - test
 
 - name: Copy panel configuration
   copy:
@@ -151,6 +144,13 @@
       - fonts-recommended
 
 - name: Set font settings
-  shell: |
-    xfconf-query --create -c 'xsettings' -p '/Gtk/FontName' --type 'string' --set 'Noto Sans 10'
-    xfconf-query --create -c 'xsettings' -p '/Gtk/MonospaceFontName' --type 'string' --set 'JetBrains Mono NL 12'
+  xfconf:
+    channel: xsettings
+    property: /Gtk/FontName
+    value_type: string
+    value: Noto Sans 10
+  xfconf:
+    channel: xsettings
+    property: /Gtk/MonospaceFontName
+    value_type: string
+    value: JetBrains Mono NL 12

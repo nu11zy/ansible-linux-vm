@@ -13,19 +13,19 @@
       <property name="icon-size" type="uint" value="16"/>
       <property name="size" type="uint" value="26"/>
       <property name="plugin-ids" type="array">
-        <value type="int" value="19"/>
-        <value type="int" value="20"/>
-        <value type="int" value="4"/>
+        <value type="int" value="1"/>
         <value type="int" value="2"/>
         <value type="int" value="3"/>
+        <value type="int" value="4"/>
+        <value type="int" value="5"/>
         <value type="int" value="6"/>
-        <value type="int" value="25"/>
-        <value type="int" value="27"/>
-        <value type="int" value="9"/>
-        <value type="int" value="1"/>
         <value type="int" value="7"/>
         <value type="int" value="8"/>
-        <value type="int" value="21"/>
+        <value type="int" value="9"/>
+        <value type="int" value="10"/>
+        <value type="int" value="11"/>
+        <value type="int" value="12"/>
+        <value type="int" value="13"/>
       </property>
     </property>
     <property name="panel-2" type="empty">
@@ -35,7 +35,6 @@
       <property name="position-locked" type="bool" value="true"/>
       <property name="size" type="uint" value="48"/>
       <property name="plugin-ids" type="array">
-        <value type="int" value="13"/>
         <value type="int" value="14"/>
         <value type="int" value="15"/>
         <value type="int" value="16"/>
@@ -44,8 +43,35 @@
       </property>
     </property>
   </property>
-  <property name="plugins" type="empty">
-    <property name="plugin-2" type="string" value="tasklist">
+    <property name="plugins" type="empty">
+    <property name="plugin-1" type="string" value="whiskermenu">
+      <property name="view-mode" type="int" value="1"/>
+      <property name="category-show-name" type="bool" value="true"/>
+      <property name="launcher-show-description" type="bool" value="true"/>
+      <property name="position-categories-horizontal" type="bool" value="false"/>
+      <property name="position-profile-alternate" type="bool" value="true"/>
+      <property name="position-search-alternate" type="bool" value="false"/>
+      <property name="position-commands-alternate" type="bool" value="false"/>
+      <property name="profile-shape" type="int" value="2"/>
+      <property name="show-button-icon" type="bool" value="true"/>
+      <property name="show-button-title" type="bool" value="false"/>
+      <property name="button-icon" type="string" value="redeyes"/>
+      <property name="position-categories-alternate" type="bool" value="false"/>
+      <property name="button-single-row" type="bool" value="false"/>
+      <property name="default-category" type="int" value="1"/>
+      <property name="stay-on-focus-out" type="bool" value="false"/>
+      <property name="show-command-profile" type="bool" value="false"/>
+      <property name="show-command-lockscreen" type="bool" value="true"/>
+    </property>
+    <property name="plugin-2" type="string" value="separator">
+      <property name="style" type="uint" value="2"/>
+      <property name="expand" type="bool" value="false"/>
+    </property>
+    <property name="plugin-3" type="string" value="pager">
+      <property name="rows" type="uint" value="1"/>
+      <property name="miniature-view" type="bool" value="true"/>
+    </property>
+    <property name="plugin-4" type="string" value="tasklist">
       <property name="grouping" type="bool" value="true"/>
       <property name="flat-buttons" type="bool" value="false"/>
       <property name="show-labels" type="bool" value="true"/>
@@ -57,13 +83,9 @@
       <property name="include-all-workspaces" type="bool" value="false"/>
       <property name="include-all-monitors" type="bool" value="true"/>
     </property>
-    <property name="plugin-3" type="string" value="separator">
+    <property name="plugin-5" type="string" value="separator">
       <property name="expand" type="bool" value="true"/>
       <property name="style" type="uint" value="0"/>
-    </property>
-    <property name="plugin-4" type="string" value="pager">
-      <property name="rows" type="uint" value="1"/>
-      <property name="miniature-view" type="bool" value="true"/>
     </property>
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
@@ -76,69 +98,7 @@
       <property name="symbolic-icons" type="bool" value="false"/>
       <property name="menu-is-primary" type="bool" value="false"/>
     </property>
-    <property name="plugin-7" type="string" value="separator">
-      <property name="style" type="uint" value="0"/>
-    </property>
-    <property name="plugin-8" type="string" value="clock">
-      <property name="show-week-numbers" type="bool" value="true"/>
-      <property name="mode" type="uint" value="2"/>
-      <property name="digital-layout" type="uint" value="1"/>
-      <property name="tooltip-format" type="string" value="%A %d %B %Y"/>
-      <property name="digital-date-font" type="string" value="Monospace 8"/>
-      <property name="digital-time-font" type="string" value="Monospace 8"/>
-      <property name="digital-date-format" type="string" value="%d.%m.%Y"/>
-      <property name="digital-time-format" type="string" value="%R"/>
-    </property>
-    <property name="plugin-13" type="string" value="launcher">
-      <property name="items" type="array">
-        <value type="string" value="17488595001.desktop"/>
-      </property>
-    </property>
-    <property name="plugin-14" type="string" value="launcher">
-      <property name="items" type="array">
-        <value type="string" value="17488595002.desktop"/>
-      </property>
-    </property>
-    <property name="plugin-15" type="string" value="launcher">
-      <property name="items" type="array">
-        <value type="string" value="17488595003.desktop"/>
-      </property>
-    </property>
-    <property name="plugin-16" type="string" value="launcher">
-      <property name="items" type="array">
-        <value type="string" value="17488595004.desktop"/>
-      </property>
-    </property>
-    <property name="plugin-17" type="string" value="separator"/>
-    <property name="plugin-18" type="string" value="directorymenu">
-      <property name="base-directory" type="string" value="/home/user"/>
-    </property>
-    <property name="plugin-19" type="string" value="whiskermenu">
-      <property name="view-mode" type="int" value="1"/>
-      <property name="category-show-name" type="bool" value="true"/>
-      <property name="launcher-show-description" type="bool" value="true"/>
-      <property name="position-categories-horizontal" type="bool" value="false"/>
-      <property name="position-profile-alternate" type="bool" value="true"/>
-      <property name="position-search-alternate" type="bool" value="false"/>
-      <property name="position-commands-alternate" type="bool" value="false"/>
-      <property name="profile-shape" type="int" value="0"/>
-      <property name="show-button-icon" type="bool" value="true"/>
-      <property name="show-button-title" type="bool" value="false"/>
-      <property name="position-categories-alternate" type="bool" value="false"/>
-      <property name="button-single-row" type="bool" value="false"/>
-      <property name="default-category" type="int" value="1"/>
-      <property name="stay-on-focus-out" type="bool" value="false"/>
-      <property name="show-command-profile" type="bool" value="false"/>
-      <property name="show-command-lockscreen" type="bool" value="true"/>
-    </property>
-    <property name="plugin-20" type="string" value="separator">
-      <property name="style" type="uint" value="2"/>
-      <property name="expand" type="bool" value="false"/>
-    </property>
-    <property name="plugin-21" type="string" value="separator">
-      <property name="style" type="uint" value="0"/>
-    </property>
-    <property name="plugin-25" type="string" value="systemload">
+    <property name="plugin-7" type="string" value="systemload">
       <property name="swap" type="empty">
         <property name="enabled" type="bool" value="false"/>
       </property>
@@ -155,16 +115,53 @@
         <property name="label" type="string" value=""/>
       </property>
     </property>
-    <property name="plugin-27" type="string" value="netload"/>
-    <property name="plugin-1" type="string" value="xkb">
+    <property name="plugin-8" type="string" value="netload"/>
+    <property name="plugin-9" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-10" type="string" value="xkb">
       <property name="display-type" type="uint" value="2"/>
       <property name="display-name" type="uint" value="1"/>
       <property name="caps-lock-indicator" type="bool" value="true"/>
       <property name="display-tooltip-icon" type="bool" value="false"/>
       <property name="group-policy" type="uint" value="0"/>
     </property>
-    <property name="plugin-9" type="string" value="separator">
+    <property name="plugin-11" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-12" type="string" value="clock">
+      <property name="show-week-numbers" type="bool" value="true"/>
+      <property name="mode" type="uint" value="2"/>
+      <property name="digital-layout" type="uint" value="1"/>
+      <property name="tooltip-format" type="string" value="%A %d %B %Y"/>
+      <property name="digital-date-font" type="string" value="Monospace 8"/>
+      <property name="digital-time-font" type="string" value="Monospace 8"/>
+      <property name="digital-date-format" type="string" value="%d.%m.%Y"/>
+      <property name="digital-time-format" type="string" value="%R"/>
+    </property>
+    <property name="plugin-13" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-14" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="17488595001.desktop"/>
+      </property>
+    </property>
+    <property name="plugin-15" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="17488595002.desktop"/>
+      </property>
+    </property>
+    <property name="plugin-16" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="17488595003.desktop"/>
+      </property>
+    </property>
+    <property name="plugin-17" type="string" value="separator"/>
+    <property name="plugin-18" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="17488595004.desktop"/>
+      </property>
     </property>
   </property>
 </channel>
