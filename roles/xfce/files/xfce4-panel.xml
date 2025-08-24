@@ -38,12 +38,13 @@
         <value type="int" value="14"/>
         <value type="int" value="15"/>
         <value type="int" value="16"/>
+        <value type="int" value="19"/>
         <value type="int" value="17"/>
         <value type="int" value="18"/>
       </property>
     </property>
   </property>
-    <property name="plugins" type="empty">
+  <property name="plugins" type="empty">
     <property name="plugin-1" type="string" value="whiskermenu">
       <property name="view-mode" type="int" value="1"/>
       <property name="category-show-name" type="bool" value="true"/>
@@ -155,6 +156,11 @@
     <property name="plugin-16" type="string" value="launcher">
       <property name="items" type="array">
         <value type="string" value="17488595003.desktop"/>
+      </property>
+    </property>
+    <property name="plugin-19" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="17488595005.desktop"/>
       </property>
     </property>
     <property name="plugin-17" type="string" value="separator"/>

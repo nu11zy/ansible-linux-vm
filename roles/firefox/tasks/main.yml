@@ -17,7 +17,7 @@
     file_type: directory
   register: firefox_config_folder_search
 
-- name: Set firefox folder name as fact
+- name: Get firefox folder path
   set_fact:
     firefox_config_folder_path: "{{ firefox_config_folder_search.files[0].path }}"
 

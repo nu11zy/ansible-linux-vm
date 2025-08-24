@@ -7,6 +7,8 @@
       - dconf-cli
       - tree
       - bat
+      - jq
+      - xq
 
 # Terminal
 - name: Set default terminal
@@ -22,10 +24,10 @@
     state: directory
     recurse: true
 
-- name: Copy Kali.json
+- name: Copy Shell.json
   copy:
-    src: Kali.json
-    dest: ~/.config/tilix/schemes/Kali.json
+    src: Shell.json
+    dest: ~/.config/tilix/schemes/Shell.json
 
 - name: Copy tilix.dconf
   copy:

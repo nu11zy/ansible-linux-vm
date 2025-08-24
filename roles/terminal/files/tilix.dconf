@@ -1,49 +1,29 @@
 [/]
-accelerators-enabled=true
 app-title='${sessionName}'
 auto-hide-mouse=true
-copy-on-select=false
+close-with-last-session=false
+control-click-titlebar=true
 enable-wide-handle=true
-new-instance-mode='new-window'
-paste-advanced-default=false
-paste-strip-trailing-whitespace=false
-prompt-on-new-session=false
-quake-hide-headerbar=true
-quake-hide-lose-focus=false
-quake-show-on-all-workspaces=true
+new-instance-mode='new-session'
+prompt-on-new-session=true
 quake-specific-monitor=0
-sidebar-on-right=false
 terminal-title-style='small'
-theme-variant='dark'
-window-style='normal'
-
-[keybindings]
-app-new-session='<Shift><Alt>Return'
 
 [profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
 background-color='#23252E'
 background-transparency-percent=0
-badge-color='#AC7EA8'
 badge-color-set=false
-badge-text=''
 bold-color-set=false
-bold-is-bright=true
-cell-height-scale=1.0
-cell-width-scale=1.0
 cjk-utf8-ambiguous-width='narrow'
+cursor-blink-mode='on'
 cursor-colors-set=false
-default-size-columns=80
-dim-transparency-percent=0
-draw-margin=80
-font='JetBrains Mono NL 12'
+cursor-shape='ibeam'
+font='JetBrains Mono NL 11'
 foreground-color='#FFFFFF'
 highlight-colors-set=false
-login-shell=true
-notify-silence-enabled=false
 palette=['#1F2229', '#D41919', '#5EBDAB', '#FEA44C', '#357AF0', '#9655B3', '#48AEE6', '#E6E6E6', '#198388', '#EC0000', '#47D4B9', '#FF8A18', '#277FFF', '#962AC3', '#05A1F7', '#FFFFFF']
 scrollback-lines=10000
-show-scrollbar=true
 terminal-bell='none'
-use-system-font=true
+use-system-font=false
 use-theme-colors=false
 visible-name='Default'

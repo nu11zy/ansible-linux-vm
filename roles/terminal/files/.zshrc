@@ -32,14 +32,14 @@ SAVEHIST=2000
 
 setopt HIST_IGNORE_SPACE        # ignore commands that start with space
 setopt HIST_IGNORE_ALL_DUPS     # ignore duplicated commands history list
+setopt HIST_SAVE_NO_DUPS        # do not save commands that are duplicates of the previous command
 setopt HIST_REDUCE_BLANKS       # remove superfluous blanks from each command line being added to the history list
 setopt HIST_VERIFY              # show command with history expansion to user before running it
 
 # COLORS
+export CLICOLOR=1
+export LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=37;41:sg=30;43:tw=30;42:ow=34;42:"
 if [ -x /usr/bin/dircolors ]; then
-    eval "$(dircolors -b)"
-    export LS_COLORS="$LS_COLORS:ow=30;44:" # fix ls color for folders with 777 permissions
-
     export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
     export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
     export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
@@ -98,45 +98,31 @@ fi
 # COMPLETITIONS
 autoload -Uz compinit
 compinit -d ~/.cache/zsh/zcompdump
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' completer _expand _complete
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*:*:*:*:*' menu true select
 zstyle ':completion:*' rehash true
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' completer _complete _expand
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:messages' format $'%F{green}-> %d %f'
+zstyle ':completion:*:descriptions' format $'%F{green}-> %d %f'
+zstyle ':completion:*:default' select-prompt $'%F{green}-> Match: %m  (%p) %f'
 
 # AUTO-SUGGESTIONS
 if [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
     . /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#999'
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=243'
     ZSH_AUTOSUGGEST_HISTORY_IGNORE="(ls *|cd *|clear|reset)"
 fi
 
-# TITLE
-case "$TERM" in
-xterm*|rxvt*|Eterm|aterm|kterm|gnome*|alacritty)
-    TERM_TITLE=$'\e]0;%m:%~\a'
-    ;;
-*)
-    ;;
-esac
-
-# UPDATE TITLE
+# PROMPT
 precmd() {
-    print -Pnr -- "$TERM_TITLE"
     precmd() {
-        print -Pnr -- "$TERM_TITLE"
         print ""
     }
 }
 
-# PROMPT
 PROMPT=$'%F{250}[%D{%f/%m} | %T]%f %F{243}->%f %F{10}%n@%m%f %F{243}->%f %F{11}%B%0~%b%f\n%F{5}$%f '
 
 # ALIASES

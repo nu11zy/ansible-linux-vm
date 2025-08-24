@@ -9,4 +9,4 @@
   copy:
     src: code
     dest: /usr/bin/code
-    mode: '0755'
+    mode: 0755

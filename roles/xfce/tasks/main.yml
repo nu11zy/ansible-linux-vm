@@ -87,9 +87,15 @@
     - { channel: xfwm4, property: /general/activate_action, value: switch, type: string }
     - { channel: xfwm4, property: /general/mousewheel_rollup, value: false, type: bool }
     - { channel: xfwm4, property: /general/scroll_workspaces, value: false, type: bool }
+    - { channel: xfwm4, property: /general/zoom_desktop, value: false, type: bool }
+    - { channel: xfwm4, property: /general/zoom_pointer, value: false, type: bool }
     - { channel: xfce4-appfinder, property: /hide-window-decorations, value: true, type: bool }
     - { channel: xfce4-appfinder, property: /close-on-focus-lost, value: true, type: bool }
     - { channel: xfce4-appfinder, property: /sort-by-frecency, value: true, type: bool }
+
+- name: Change shortcuts
+  shell: |
+    xfconf-query -c xfce4-keyboard-shortcuts -p '/xfwm4/custom/<Primary>Delete' -r -R
 
 - name: Install panel plugins
   become: true
@@ -113,14 +119,12 @@
     state: directory
     recurse: true
 
-- name: Copy panel plugins
+- name: Copy panel configuration
   copy:
     src: panel/
     dest: ~/.config/xfce4/panel/
-    mode: '0644'
-    directory_mode: '0755'
-  tags:
-    - test
+    mode: 0644
+    directory_mode: 0755
 
 - name: Copy panel configuration
   copy:
