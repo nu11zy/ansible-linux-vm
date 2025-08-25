@@ -13,6 +13,8 @@
       - thunar-archive-plugin
       - ristretto
       - papirus-icon-theme
+      - flameshot
+      - vlc
 
 # HiDPI settings
 - name: Set xfce4 DPI
@@ -95,7 +97,8 @@
 
 - name: Change shortcuts
   shell: |
-    xfconf-query -c xfce4-keyboard-shortcuts -p '/xfwm4/custom/<Primary>Delete' -r -R
+    xfconf-query -c xfce4-keyboard-shortcuts -p '/xfwm4/default/<Alt>Delete' -r -R
+    xfconf-query -c xfce4-keyboard-shortcuts -p '/xfwm4/custom/<Alt>Delete' -r -R
 
 - name: Install panel plugins
   become: true
