@@ -61,6 +61,7 @@ zstyle ':completion:*' rehash true
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
 zstyle ':completion:*' group-name ''
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' completer _complete _expand
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*:messages' format $'%F{green}-> %d %f'
