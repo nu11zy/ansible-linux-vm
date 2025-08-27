@@ -4,6 +4,10 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
 fi
 
 # OPTIONS
+DISABLE_AUTO_UPDATE="true"
+DISABLE_MAGIC_FUNCTIONS="true"
+DISABLE_COMPFIX="true"
+
 setopt numericglobsort  # sort filenames numerically when it makes sense
 setopt nonomatch        # hide error message if there is no match for the pattern
 setopt notify           # report the status of background jobs immediately
@@ -11,7 +15,7 @@ setopt notify           # report the status of background jobs immediately
 # CONFIG
 stty stop undef
 zle_highlight=('paste:none')
-WORDCHARS=${WORDCHARS//\/}
+WORDCHARS=${WORDCHARS//[\/_.]/}
 
 # KEYBINDINGS
 bindkey ' ' magic-space                           # do history expansion on space
@@ -49,6 +53,28 @@ if [ -x /usr/bin/dircolors ]; then
     export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 fi
 
+# COMPLETITIONS
+autoload -Uz compinit
+compinit -d ~/.cache/zsh/zcompdump
+zstyle ':completion:*:*:*:*:*' menu true select
+zstyle ':completion:*' rehash true
+zstyle ':completion:*' verbose true
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' completer _complete _expand
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:messages' format $'%F{green}-> %d %f'
+zstyle ':completion:*:descriptions' format $'%F{green}-> %d %f'
+zstyle ':completion:*:default' select-prompt $'%F{green}-> Match: %m  (%p) %f'
+
+# AUTO-SUGGESTIONS
+if [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+    . /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=243'
+    ZSH_AUTOSUGGEST_HISTORY_IGNORE="(ls *|cd *|clear|reset)"
+fi
+
+# SYNTAX HIGHLIGHTING
 if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
     . /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
@@ -95,27 +121,6 @@ if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; 
     ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]=standout
 fi
 
-# COMPLETITIONS
-autoload -Uz compinit
-compinit -d ~/.cache/zsh/zcompdump
-zstyle ':completion:*:*:*:*:*' menu true select
-zstyle ':completion:*' rehash true
-zstyle ':completion:*' verbose true
-zstyle ':completion:*' use-cache true
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' completer _complete _expand
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*:messages' format $'%F{green}-> %d %f'
-zstyle ':completion:*:descriptions' format $'%F{green}-> %d %f'
-zstyle ':completion:*:default' select-prompt $'%F{green}-> Match: %m  (%p) %f'
-
-# AUTO-SUGGESTIONS
-if [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-    . /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=243'
-    ZSH_AUTOSUGGEST_HISTORY_IGNORE="(ls *|cd *|clear|reset)"
-fi
-
 # PROMPT
 precmd() {
     precmd() {
@@ -139,4 +144,3 @@ alias clear_history='unset HISTFILE; rm -rf ~/.cache/zsh; exit'
 
 # PATH
 export PATH=$PATH:$HOME/.local/bin
-export GOPATH=$HOME/.local/go

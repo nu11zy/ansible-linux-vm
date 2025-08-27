@@ -11,6 +11,7 @@
       - xfce4-xkb-plugin
       - thunar
       - thunar-archive-plugin
+      - catfish
       - ristretto
       - papirus-icon-theme
       - flameshot
