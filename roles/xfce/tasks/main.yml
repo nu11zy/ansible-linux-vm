@@ -81,6 +81,9 @@
     - { channel: xfce4-desktop, property: /backdrop/screen0/monitorVirtual-1/workspace0/color-style, value: 0, type: int }
     - { channel: xfce4-desktop, property: /backdrop/screen0/monitorVirtual-1/workspace0/image-style, value: 0, type: int }
     - { channel: xfce4-desktop, property: /backdrop/screen0/monitorVirtual-1/workspace0/rgba1, value: [0.10196078431372549, 0.10196078431372549, 0.11372549019607843, 1], type: double, force_array: true }
+    - { channel: xfce4-desktop, property: /backdrop/screen0/monitorVirtual1/workspace0/color-style, value: 0, type: int }
+    - { channel: xfce4-desktop, property: /backdrop/screen0/monitorVirtual1/workspace0/image-style, value: 0, type: int }
+    - { channel: xfce4-desktop, property: /backdrop/screen0/monitorVirtual1/workspace0/rgba1, value: [0.10196078431372549, 0.10196078431372549, 0.11372549019607843, 1], type: double, force_array: true }
     - { channel: keyboard-layout, property: /Default/XkbDisable, value: false, type: bool }
     - { channel: keyboard-layout, property: /Default/XkbOptions/Group, value: grp:alt_shift_toggle, type: string }
     # Window manager settings
